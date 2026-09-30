@@ -30,7 +30,7 @@ function scripts() {
 }
 
 function images() {
-  return src('src/app/imgs/**/*')
+  return src('src/app/imgs/**/*', {encoding: false})
     .pipe(dest('dist/imgs'))
     .pipe(browserSync.stream());
 }
