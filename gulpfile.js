@@ -6,6 +6,18 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create();
 
+//Копіювання CSS Bootstrap
+function bootstrapCss() {
+  return src('node_modules/bootstrap/dist/css/bootstrap.min.css')
+    .pipe(dest('dist/css'));
+}
+
+//  Копіювання JS Bootstrap
+function bootstrapJs() {
+  return src('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js')
+    .pipe(dest('dist/js'));
+}
+
 function html() {
   return src('src/app/index.html')
     .pipe(fileInclude())
@@ -30,7 +42,7 @@ function scripts() {
 }
 
 function images() {
-  return src('src/app/imgs/**/*', {encoding: false})
+  return src('src/app/imgs/**/*', { encoding: false })
     .pipe(dest('dist/imgs'))
     .pipe(browserSync.stream());
 }
@@ -48,7 +60,12 @@ function serve() {
   watch('src/app/imgs/**/*', images);
 }
 
+// Експортуємо окремі таски для виконання через CLI при потребі
+exports['bootstrap-css'] = bootstrapCss;
+exports['bootstrap-js'] = bootstrapJs;
+
+// Загальний процес збірки (Bootstrap збирається паралельно з іншими файлами)
 exports.default = series(
-  parallel(html, styles, scripts, images),
+  parallel(bootstrapCss, bootstrapJs, html, styles, scripts, images),
   serve
 );
