@@ -1,0 +1,31 @@
+@use 'sass:math';
+
+// Кольори (зняті з макета)
+$yellow: #ffcb2f;
+$dark: #232323;
+$dark-track: #3b3b3d;
+$text: #333333;
+$gray: #777;
+$light-gray: #d6d6d6;
+$track: #e2e2e2;
+$white: #fff;
+$bg: #dedede;
+
+// Шрифти
+$font-main: 'Raleway', Arial, sans-serif;
+$font-size-base: 10px;
+$font-size-title: $font-size-base * 1.65; // 16.5px
+
+// Відступи
+$gap-sm: 8px;
+$gap-md: $gap-sm * 2 - 2;  // 14px
+$gap-lg: $gap-sm * 3;      // 24px
+
+// Розміри
+$page-width: 794px;
+$page-height: 1123px;
+$sidebar-width: 250px;
+$sidebar-pad-left: 36px;
+$sidebar-pad-right: 32px;
+$photo-width: $sidebar-width - $sidebar-pad-left - $sidebar-pad-right; // 182px
+$band-width: math.percentage(math.div(547, 794));                       // ~68.9%

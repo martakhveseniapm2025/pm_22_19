@@ -1,0 +1,101 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'placeholders';
+
+.sidebar {
+  width: 100%;
+  background: $dark;
+  color: $white;
+  padding: 32px $sidebar-pad-right 32px $sidebar-pad-left;
+
+  .photo {
+    width: $photo-width;
+    margin: 0 auto 33px;
+    background: $white;
+    padding: 6px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 182 / 211;
+      object-fit: cover;
+    }
+  }
+
+  .sec-title {
+    @extend %sec-title;
+    border-color: $gray;
+    color: $white;
+  }
+
+  .ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: $yellow;
+
+    img { width: 12px; height: 12px; }
+  }
+
+  .entry {
+    display: flex;
+    gap: 12px;
+    margin-top: $gap-lg + 4px;
+
+    .date { @extend %date-tag; }
+    .org { font-style: italic; font-weight: 700; font-size: 11px; }
+    .role { text-transform: uppercase; font-weight: 700; font-size: 13px; }
+    p {
+      margin: 4px 0 0;
+      color: $light-gray;
+      font-size: $font-size-base * 0.95;
+      line-height: 1.55;
+      text-align: justify;
+    }
+  }
+
+  .refs,
+  .langs { margin-top: $gap-lg + $gap-md + 4px; }
+
+  // Bootstrap list-group у темній темі
+  .list-group {
+    --bs-list-group-bg: transparent;
+    --bs-list-group-color: #{$white};
+    --bs-list-group-border-width: 0;
+    --bs-list-group-item-padding-x: 0;
+    --bs-list-group-item-padding-y: 0;
+    margin-top: $gap-md;
+
+    .ref {
+      font-size: 10.5px;
+      line-height: 1.7;
+      margin-bottom: $gap-md;
+
+      .name { font-weight: 800; text-transform: uppercase; font-size: 11px; }
+      .addr { color: $yellow; font-style: italic; font-weight: 700; }
+    }
+  }
+
+  .bars {
+    margin: $gap-md 0 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 22px;
+      font-size: 9px;
+      font-weight: 700;
+
+      .lbl { @include square-bullet; }
+    }
+
+    .progress {
+      @include progress-theme($dark-track);
+      width: 80px;
+    }
+  }
+}

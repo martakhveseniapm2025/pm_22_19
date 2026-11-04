@@ -1,0 +1,83 @@
+@use 'variables' as *;
+
+.header {
+  .intro {
+    padding-left: $gap-lg + 4px;
+    min-height: 152px - 43px; // від верху сторінки до жовтої смуги
+
+    p {
+      margin: 0;
+      font-size: $font-size-base;
+      line-height: 1.6;
+      text-align: justify;
+
+      &.quote {
+        font-weight: 700;
+        font-style: italic;
+        color: #111;
+        margin-top: $gap-sm;
+      }
+    }
+  }
+
+  .hero {
+    min-height: 134px;
+    padding-left: $gap-lg + 4px;
+  }
+
+  .name-block {
+    h1 {
+      margin: 0;
+      font-size: 37px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: $dark;
+
+      &.first { font-weight: 800; }
+      &.last {
+        font-weight: 300;
+        font-size: 37px + 1; // математика
+        margin-top: 2px;
+      }
+    }
+
+    .job {
+      margin-top: $gap-sm;
+      font-size: $font-size-base;
+      font-style: italic;
+      letter-spacing: 2.4px;
+      color: $gray;
+    }
+  }
+
+  .contacts {
+    margin: 0 0 0 $gap-lg + 8px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 9.5px;
+      font-style: italic;
+      font-weight: 600;
+      color: #222;
+      padding: 9px 0 8px;
+      border-bottom: 1px solid #bbb;
+
+      &:last-child { border-bottom: 0; }
+    }
+
+    .ci {
+      flex: 0 0 14px;
+      width: 14px;
+      height: 14px;
+      background: $yellow;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      img { width: 9px; height: 9px; }
+    }
+  }
+}

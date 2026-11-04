@@ -1,0 +1,47 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'placeholders';
+
+.bottom {
+  margin-top: $gap-lg + $gap-sm;
+
+  .skills { padding-right: $gap-lg + $gap-sm + 4px; } // 36px
+  .hobbies { padding-left: 4px; }
+
+  .sec-title {
+    @extend %sec-title;
+    border-color: #000;
+    color: $dark;
+  }
+
+  .ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: $yellow;
+
+    img { width: 12px; height: 12px; }
+  }
+
+  .bars {
+    margin: 12px 0 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 24px;
+      font-size: 9.5px;
+      font-weight: 700;
+
+      .lbl { @include square-bullet(5px); }
+    }
+
+    .progress {
+      @include progress-theme($track);
+      width: 80px;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Спільний стиль заголовків секцій (для @extend)
+%sec-title {
+  @include section-title;
+}
+
+// Спільний стиль жовтої вертикальної дати
+%date-tag {
+  flex: 0 0 18px;
+  background: $yellow;
+  color: $dark;
+  font-weight: 700;
+  font-size: 8.5px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  padding: 8px 0;
+  white-space: nowrap;
+}

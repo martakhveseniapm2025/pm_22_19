@@ -1,71 +1,130 @@
 const { src, dest, watch, series, parallel } = require('gulp');
 const fileInclude = require('gulp-file-include');
 const sass = require('gulp-sass')(require('sass'));
-const csso = require('gulp-csso');
-const concat = require('gulp-concat');
+const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const imagemin = require('gulp-imagemin');
 const browserSync = require('browser-sync').create();
+const rename = require('gulp-rename');
+const clean = require('gulp-clean');
 
-//Копіювання CSS Bootstrap
-function bootstrapCss() {
-  return src('node_modules/bootstrap/dist/css/bootstrap.min.css')
-    .pipe(dest('dist/css'));
+// ========== ШЛЯХИ ==========
+const paths = {
+  html: {
+    src: 'src/app/*.html',
+    components: 'src/app/components/**/*.html',
+    dest: 'dist/'
+  },
+  scss: {
+    src: 'src/app/scss/main.scss',
+    watch: 'src/app/scss/**/*.scss',
+    dest: 'dist/css/'
+  },
+  js: {
+    src: 'src/app/js/**/*.js',
+    dest: 'dist/js/'
+  },
+  imgs: {
+    src: 'src/app/imgs/**/*',
+    dest: 'dist/imgs/'
+  },
+  bootstrap: {
+    css: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
+    js: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
+  }
+};
+
+// ========== ОЧИСТКА ==========
+function cleanDist() {
+  return src('dist', { allowEmpty: true, read: false })
+    .pipe(clean());
 }
 
-//  Копіювання JS Bootstrap
-function bootstrapJs() {
-  return src('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js')
-    .pipe(dest('dist/js'));
-}
-
+// ========== HTML (file include) ==========
 function html() {
-  return src('src/app/index.html')
-    .pipe(fileInclude())
-    .pipe(dest('dist'))
-    .pipe(browserSync.stream());
+  return src(paths.html.src)
+    .pipe(fileInclude({
+      prefix: '@@',
+      basepath: '@file'
+    }))
+    .pipe(dest(paths.html.dest))
+    .pipe(browserSync.reload({ stream: true }));
 }
 
+// ========== SCSS -> index.min.css (Lab 3) ==========
 function styles() {
-  return src('src/app/scss/**/*.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(csso())
-    .pipe(dest('dist/css'))
+  return src(paths.scss.src)
+    .pipe(sass({ outputStyle: 'expanded' }).on('error', sass.logError))
+    .pipe(cssnano())
+    .pipe(rename({ basename: 'index', suffix: '.min' }))
+    .pipe(dest(paths.scss.dest))
     .pipe(browserSync.stream());
 }
 
+// ========== JS -> script.min.js ==========
 function scripts() {
-  return src('src/app/js/**/*.js')
-    .pipe(concat('main.min.js'))
+  return src(paths.js.src)
+    .pipe(concat('script.min.js'))
     .pipe(uglify())
-    .pipe(dest('dist/js'))
-    .pipe(browserSync.stream());
+    .pipe(dest(paths.js.dest))
+    .pipe(browserSync.reload({ stream: true }));
 }
 
+// ========== ЗОБРАЖЕННЯ (оптимізація) ==========
 function images() {
-  return src('src/app/imgs/**/*', { encoding: false })
-    .pipe(dest('dist/imgs'))
-    .pipe(browserSync.stream());
+  return src(paths.imgs.src, { encoding: false })
+    .pipe(imagemin())
+    .pipe(dest(paths.imgs.dest))
+    .pipe(browserSync.reload({ stream: true }));
 }
 
-function serve() {
+// ========== BOOTSTRAP (Lab 2) ==========
+function bootstrapCss() {
+  return src(paths.bootstrap.css)
+    .pipe(dest('dist/css/'));
+}
+
+function bootstrapJs() {
+  return src(paths.bootstrap.js)
+    .pipe(dest('dist/js/'));
+}
+
+// ========== SERVER ==========
+function serve(done) {
   browserSync.init({
-    server: {
-      baseDir: './dist'
-    }
+    server: { baseDir: 'dist' },
+    notify: false,
+    open: true
   });
-
-  watch('src/app/**/*.html', html);
-  watch('src/app/scss/**/*.scss', styles);
-  watch('src/app/js/**/*.js', scripts);
-  watch('src/app/imgs/**/*', images);
+  done();
 }
 
-// Експортуємо окремі таски для виконання через CLI при потребі
-exports['bootstrap-css'] = bootstrapCss;
-exports['bootstrap-js'] = bootstrapJs;
+// ========== WATCHER ==========
+function watcher() {
+  watch([paths.html.src, paths.html.components], html);
+  watch(paths.scss.watch, styles);
+  watch(paths.js.src, scripts);
+  watch(paths.imgs.src, images);
+}
 
-// Загальний процес збірки (Bootstrap збирається паралельно з іншими файлами)
+// ========== ЕКСПОРТ ==========
+exports.clean = cleanDist;
+exports.html = html;
+exports.styles = styles;
+exports.scripts = scripts;
+exports.images = images;
+exports.bootstrapCss = bootstrapCss;
+exports.bootstrapJs = bootstrapJs;
+
+exports.build = series(
+  cleanDist,
+  parallel(html, styles, scripts, images, bootstrapCss, bootstrapJs)
+);
+
 exports.default = series(
-  parallel(bootstrapCss, bootstrapJs, html, styles, scripts, images),
-  serve
+  cleanDist,
+  parallel(html, styles, scripts, images, bootstrapCss, bootstrapJs),
+  serve,
+  watcher
 );

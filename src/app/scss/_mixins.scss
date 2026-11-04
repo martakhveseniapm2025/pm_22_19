@@ -1,0 +1,35 @@
+@use 'variables' as *;
+
+@mixin section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid;
+  padding-bottom: 5px;
+  margin: 0;
+  font-weight: 700;
+  font-size: $font-size-title;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+// Колір смуги прогресу Bootstrap через CSS-змінні
+@mixin progress-theme($track-color, $fill-color: $yellow) {
+  --bs-progress-height: 3px;
+  --bs-progress-border-radius: 0;
+  --bs-progress-bg: #{$track-color};
+  --bs-progress-bar-bg: #{$fill-color};
+}
+
+// Жовтий квадратик-маркер перед підписом
+@mixin square-bullet($size: 6px) {
+  &::before {
+    content: '';
+    display: inline-block;
+    width: $size;
+    height: $size;
+    margin-right: $size + 4px;
+    background: $yellow;
+  }
+}

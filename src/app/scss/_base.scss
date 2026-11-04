@@ -1,0 +1,40 @@
+@use 'variables' as *;
+
+body {
+  background: $bg;
+  font-family: $font-main;
+  color: $text;
+  padding: $gap-lg + 6px 0;
+}
+
+.page {
+  position: relative;
+  max-width: $page-width;
+  background: $white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  padding: 0 0 49px;
+
+  // Жовта смуга за іменем (лише на великих екранах)
+  @media (min-width: 992px) {
+    min-height: $page-height;
+    padding: 43px 41px 49px 42px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 152px;
+      width: $band-width;
+      height: 134px;
+      background: $yellow;
+    }
+  }
+}
+
+.sidebar-col,
+.content-col {
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar-col { display: flex; }

@@ -1,0 +1,57 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'placeholders';
+
+.content-col main { padding-left: $gap-lg + 4px; }
+
+.exp {
+  margin-top: $gap-lg + $gap-sm;
+
+  .sec-title {
+    @extend %sec-title;
+    border-color: #000;
+    color: $dark;
+  }
+
+  .ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: $yellow;
+
+    img { width: 12px; height: 12px; }
+  }
+
+  // Bootstrap card без рамки й фону
+  .card.entry {
+    --bs-card-bg: transparent;
+    --bs-card-border-width: 0;
+    --bs-card-border-radius: 0;
+    --bs-card-spacer-x: 0;
+    --bs-card-spacer-y: 0;
+    margin-top: $gap-lg;
+
+    .card-body {
+      display: flex;
+      gap: $gap-md;
+    }
+
+    .date { @extend %date-tag; }
+    .org { font-style: italic; font-weight: 700; font-size: 11.5px; }
+    .place { font-style: italic; font-size: $font-size-base; }
+    .role {
+      margin: 0;
+      font-weight: 800;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    p {
+      margin: 4px 0 0;
+      font-size: $font-size-base;
+      line-height: 1.55;
+      text-align: justify;
+    }
+  }
+}
