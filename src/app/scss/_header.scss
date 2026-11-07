@@ -51,6 +51,7 @@
     }
   }
 
+  // Лінія є під кожним контактом, включно з геолокацією
   .contacts {
     margin: 0 0 0 $gap-lg + 8px;
 
@@ -64,8 +65,6 @@
       color: #222;
       padding: 9px 0 8px;
       border-bottom: 1px solid #bbb;
-
-      &:last-child { border-bottom: 0; }
     }
 
     .ci {

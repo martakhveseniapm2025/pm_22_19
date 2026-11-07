@@ -6,7 +6,8 @@
   width: 100%;
   background: $dark;
   color: $white;
-  padding: 32px $sidebar-pad-right 32px $sidebar-pad-left;
+  // Нижній відступ прибрано: сайдбар закінчується разом із контентом
+  padding: 32px $sidebar-pad-right 0 $sidebar-pad-left;
 
   .photo {
     width: $photo-width;
@@ -23,22 +24,14 @@
     }
   }
 
+  // Лінії в чорному блоці білі
   .sec-title {
     @extend %sec-title;
-    border-color: $gray;
+    border-color: $white;
     color: $white;
   }
 
-  .ico {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background: $yellow;
-
-    img { width: 12px; height: 12px; }
-  }
+  .ico { @include icon-box; }
 
   .entry {
     display: flex;
@@ -57,8 +50,9 @@
     }
   }
 
+  // Відстань між секціями сайдбару
   .refs,
-  .langs { margin-top: $gap-lg + $gap-md + 4px; }
+  .langs { margin-top: $gap-lg + $gap-sm; }
 
   // Bootstrap list-group у темній темі
   .list-group {
@@ -74,6 +68,9 @@
       line-height: 1.7;
       margin-bottom: $gap-md;
 
+      // Останній референс без нижнього відступу
+      &:last-child { margin-bottom: 0; }
+
       .name { font-weight: 800; text-transform: uppercase; font-size: 11px; }
       .addr { color: $yellow; font-style: italic; font-weight: 700; }
     }
@@ -85,17 +82,24 @@
     li {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: $gap-sm;
       height: 22px;
       font-size: 9px;
       font-weight: 700;
 
-      .lbl { @include square-bullet; }
-    }
+      .lbl {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        @include square-bullet;
+      }
 
-    .progress {
-      @include progress-theme($dark-track);
-      width: 80px;
+      .progress {
+        @include progress-theme($dark-track);
+        flex: 1 1 40px;
+        min-width: 40px;
+        max-width: 80px;
+        margin-left: auto;
+      }
     }
   }
 }

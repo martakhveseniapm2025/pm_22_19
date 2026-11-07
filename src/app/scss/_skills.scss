@@ -5,8 +5,9 @@
 .bottom {
   margin-top: $gap-lg + $gap-sm;
 
-  .skills { padding-right: $gap-lg + $gap-sm + 4px; } // 36px
-  .hobbies { padding-left: 4px; }
+  // Відстань між колонками Skills і Hobbies
+  .skills { padding-right: $gap-lg; }
+  .hobbies { padding-left: $gap-lg; }
 
   .sec-title {
     @extend %sec-title;
@@ -14,16 +15,7 @@
     color: $dark;
   }
 
-  .ico {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background: $yellow;
-
-    img { width: 12px; height: 12px; }
-  }
+  .ico { @include icon-box; }
 
   .bars {
     margin: 12px 0 0;
@@ -31,17 +23,33 @@
     li {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: $gap-sm;
       height: 24px;
-      font-size: 9.5px;
+      font-size: 9px;
       font-weight: 700;
 
-      .lbl { @include square-bullet(5px); }
+      // Підпис завжди в один рядок, не переноситься
+      .lbl {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        @include square-bullet(5px);
+      }
+
+      // Смуга займає місце, що лишилось
+      .progress {
+        @include progress-theme($track);
+        flex: 1 1 40px;
+        min-width: 40px;
+        max-width: 80px;
+        margin-left: auto;
+      }
     }
 
-    .progress {
-      @include progress-theme($track);
-      width: 80px;
+    // Останній рядок без зайвого простору знизу:
+    // чорний блок закінчується на рівні тексту HTML-5/CSS-3
+    li:last-child {
+      height: auto;
+      line-height: 1.4;
     }
   }
 }

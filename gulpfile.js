@@ -27,6 +27,7 @@ const paths = {
   },
   imgs: {
     src: 'src/app/imgs/**/*',
+    jpg: 'src/app/imgs/**/*.jpg',
     dest: 'dist/imgs/'
   },
   bootstrap: {
@@ -52,7 +53,7 @@ function html() {
     .pipe(browserSync.reload({ stream: true }));
 }
 
-// ========== SCSS -> index.min.css (Lab 3) ==========
+// ========== SCSS -> index.min.css ==========
 function styles() {
   return src(paths.scss.src)
     .pipe(sass({ outputStyle: 'expanded' }).on('error', sass.logError))
@@ -71,15 +72,22 @@ function scripts() {
     .pipe(browserSync.reload({ stream: true }));
 }
 
-// ========== ЗОБРАЖЕННЯ (оптимізація) ==========
+// ========== ЗОБРАЖЕННЯ: PNG та інші оптимізуються ==========
 function images() {
-  return src(paths.imgs.src, { encoding: false })
+  return src([paths.imgs.src, '!' + paths.imgs.jpg], { encoding: false })
     .pipe(imagemin())
     .pipe(dest(paths.imgs.dest))
     .pipe(browserSync.reload({ stream: true }));
 }
 
-// ========== BOOTSTRAP (Lab 2) ==========
+// ========== ЗОБРАЖЕННЯ: JPG копіюються без змін ==========
+function photos() {
+  return src(paths.imgs.jpg, { encoding: false })
+    .pipe(dest(paths.imgs.dest))
+    .pipe(browserSync.reload({ stream: true }));
+}
+
+// ========== BOOTSTRAP ==========
 function bootstrapCss() {
   return src(paths.bootstrap.css)
     .pipe(dest('dist/css/'));
@@ -105,7 +113,7 @@ function watcher() {
   watch([paths.html.src, paths.html.components], html);
   watch(paths.scss.watch, styles);
   watch(paths.js.src, scripts);
-  watch(paths.imgs.src, images);
+  watch(paths.imgs.src, parallel(images, photos));
 }
 
 // ========== ЕКСПОРТ ==========
@@ -114,17 +122,18 @@ exports.html = html;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
+exports.photos = photos;
 exports.bootstrapCss = bootstrapCss;
 exports.bootstrapJs = bootstrapJs;
 
 exports.build = series(
   cleanDist,
-  parallel(html, styles, scripts, images, bootstrapCss, bootstrapJs)
+  parallel(html, styles, scripts, images, photos, bootstrapCss, bootstrapJs)
 );
 
 exports.default = series(
   cleanDist,
-  parallel(html, styles, scripts, images, bootstrapCss, bootstrapJs),
+  parallel(html, styles, scripts, images, photos, bootstrapCss, bootstrapJs),
   serve,
   watcher
 );

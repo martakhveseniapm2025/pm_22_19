@@ -13,16 +13,7 @@
     color: $dark;
   }
 
-  .ico {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background: $yellow;
-
-    img { width: 12px; height: 12px; }
-  }
+  .ico { @include icon-box; }
 
   // Bootstrap card без рамки й фону
   .card.entry {

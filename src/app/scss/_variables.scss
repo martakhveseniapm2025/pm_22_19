@@ -29,3 +29,7 @@ $sidebar-pad-left: 36px;
 $sidebar-pad-right: 32px;
 $photo-width: $sidebar-width - $sidebar-pad-left - $sidebar-pad-right; // 182px
 $band-width: math.percentage(math.div(547, 794));                       // ~68.9%
+
+// Іконка в заголовку секції
+$ico-size: 24px;
+$ico-glyph: math.div($ico-size, 2) + 2px; // 14px

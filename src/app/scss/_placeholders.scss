@@ -6,16 +6,21 @@
   @include section-title;
 }
 
-// Спільний стиль жовтої вертикальної дати
+// Жовтий вертикальний блок дати: текст по центру, розмір під текст
 %date-tag {
-  flex: 0 0 18px;
+  display: flex;
+  flex: 0 0 16px;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  width: 16px;
+  padding: 6px 0;
   background: $yellow;
   color: $dark;
   font-weight: 700;
   font-size: 8.5px;
+  line-height: 1;
+  white-space: nowrap;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  text-align: center;
-  padding: 8px 0;
-  white-space: nowrap;
 }
